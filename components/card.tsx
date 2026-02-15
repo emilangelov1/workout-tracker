@@ -1,26 +1,51 @@
 import { BlurView } from "expo-blur";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { COLORS } from "../constants/colors";
 import { FontAwesome } from "@expo/vector-icons";
+import { useState } from "react";
 
 const IncreaseDecreaseButtons = ({ setsArr }) => {
+  const [reps, setReps] = useState(1);
   return (
     <View style={styles.repSetsContainer}>
       <Text>#{setsArr.length}</Text>
       <TouchableOpacity
         style={styles.plusMinusButton}
-        onPress={() => console.log("test")}
+        onPress={() =>
+          setReps((prev) => {
+            if (prev === 1) {
+              return prev;
+            }
+            return prev - 1;
+          })
+        }
       >
         -
       </TouchableOpacity>
-      <Text>{setsArr.length}</Text>
+      <Text>{reps}</Text>
       <TouchableOpacity
         style={styles.plusMinusButton}
-        onPress={() => console.log("test")}
+        onPress={() => setReps((prev) => prev + 1)}
       >
         +
       </TouchableOpacity>
-      <Text>Reps</Text>
+      <Text>REPS</Text>
+      <WeightInput />
+    </View>
+  );
+};
+
+const WeightInput = () => {
+  return (
+    <View style={{ display: "flex", flexDirection: "row", gap: 15 }}>
+      <TextInput style={styles.kgInput} placeholder="20" />
+      <Text>KG</Text>
     </View>
   );
 };
@@ -50,26 +75,9 @@ export const Card = ({
         <Text style={styles.exercise}>{exerciseName}</Text>
         <FontAwesome style={styles.exercise} name="trash-o"></FontAwesome>
       </View>
+
       {setsArr.map((e) => {
-        return (
-          <View style={styles.repSetsContainer}>
-            <Text>#{setsArr.length}</Text>
-            <TouchableOpacity
-              style={styles.plusMinusButton}
-              onPress={() => console.log("test")}
-            >
-              -
-            </TouchableOpacity>
-            <Text>{setsArr.length}</Text>
-            <TouchableOpacity
-              style={styles.plusMinusButton}
-              onPress={() => console.log("test")}
-            >
-              +
-            </TouchableOpacity>
-            <Text>Reps</Text>
-          </View>
-        );
+        return <IncreaseDecreaseButtons setsArr={setsArr} />;
       })}
     </BlurView>
   );
@@ -100,11 +108,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.ACCENT,
     borderRadius: 7,
     width: "100%",
-    minHeight: 50,
+    minHeight: 75,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: 15,
+    padding: 10,
     fontFamily: "Klara-Bold",
   },
   repsSetsText: {},
@@ -118,5 +127,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     fontFamily: "Klara-Bold",
     fontSize: 20,
+  },
+  kgInput: {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 10,
   },
 });
