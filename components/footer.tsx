@@ -1,10 +1,11 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { COLORS } from "../constants/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
-
+import { FontAwesome6 } from "@expo/vector-icons";
 export const Footer = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <BlurView
         style={styles.button}
         intensity={30}
@@ -12,6 +13,7 @@ export const Footer = () => {
         experimentalBlurMethod="dimezisBlurView"
       >
         <TouchableOpacity style={styles.opacityWrapper}>
+          <FontAwesome6 name="dumbbell" color="white" size={24} />
           <Text style={styles.text}>Log</Text>
         </TouchableOpacity>
       </BlurView>
@@ -22,10 +24,11 @@ export const Footer = () => {
         experimentalBlurMethod="dimezisBlurView"
       >
         <TouchableOpacity style={styles.opacityWrapper}>
+          <FontAwesome6 name="chart-line" color="white" size={24} />
           <Text style={styles.text}>History</Text>
         </TouchableOpacity>
       </BlurView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -34,15 +37,20 @@ const styles = StyleSheet.create({
     position: "absolute",
     display: "flex",
     flexDirection: "row",
-    bottom: 5,
+    bottom: 0,
     width: "100%",
     height: "10%",
     borderTopWidth: 2,
     borderTopColor: COLORS.BORDER,
+    boxShadow: "0 0 40px -0px black",
   },
-  opacityWrapper {
+  opacityWrapper: {
     width: "100%",
     height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "12px",
   },
   button: {
     height: "100%",
@@ -51,5 +59,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#fefefe",
+    fontFamily: "Karla-Bold",
+    fontSize: 16,
   },
 });

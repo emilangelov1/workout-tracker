@@ -7,6 +7,19 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Karla-Regular.ttf",
+            "./assets/fonts/Karla-Bold.ttf",
+            "./assets/fonts/Karla-Italic.ttf",
+            "./assets/fonts/Karla-BoldItalic.ttf"
+          ]
+        }
+      ]
+    ],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",

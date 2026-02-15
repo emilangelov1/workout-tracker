@@ -20,7 +20,7 @@
     "react-native-web": "^0.21.0"
   },
   "devDependencies": {
-    "@types/react": "~19.1.0",
+    "@types/react": "^19.2.14",
     "@types/react-native": "^0.73.0",
     "babel-preset-expo": "^54.0.10",
     "prettier": "^3.8.1",
