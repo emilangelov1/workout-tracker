@@ -10,11 +10,21 @@ import { COLORS } from "../constants/colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 
-const IncreaseDecreaseButtons = ({ setsArr }) => {
+const AddNewSet = ({ onTouch }) => {
+  return (
+    <TouchableOpacity onPress={onTouch} style={styles.addNewSet}>
+      <Text>
+        <FontAwesome name="plus" size={20} /> Add New Set
+      </Text>
+    </TouchableOpacity>
+  );
+};
+
+const IncreaseDecreaseButtons = ({ setsArr, set, setSet }) => {
   const [reps, setReps] = useState(1);
   return (
     <View style={styles.repSetsContainer}>
-      <Text>#{setsArr.length}</Text>
+      <Text style={styles.setNumberText}>#{setsArr.length}</Text>
       <TouchableOpacity
         style={styles.plusMinusButton}
         onPress={() =>
@@ -26,26 +36,32 @@ const IncreaseDecreaseButtons = ({ setsArr }) => {
           })
         }
       >
-        -
+        <Text style={styles.buttonText}>-</Text>
       </TouchableOpacity>
-      <Text>{reps}</Text>
+      <Text style={styles.repsNumberText}>{reps}</Text>
       <TouchableOpacity
         style={styles.plusMinusButton}
         onPress={() => setReps((prev) => prev + 1)}
       >
-        +
+        <Text style={styles.buttonText}>+</Text>
       </TouchableOpacity>
-      <Text>REPS</Text>
+      <Text style={styles.repsLabelText}>REPS</Text>
       <WeightInput />
+      <View style={styles.spacer} />
+      <FontAwesome
+        style={styles.closeIcon}
+        name="close"
+        onPress={() => setSet(set.pop())}
+      />
     </View>
   );
 };
 
 const WeightInput = () => {
   return (
-    <View style={{ display: "flex", flexDirection: "row", gap: 15 }}>
+    <View style={styles.weightContainer}>
       <TextInput style={styles.kgInput} placeholder="20" />
-      <Text>KG</Text>
+      <Text style={styles.weightText}>KG</Text>
     </View>
   );
 };
@@ -69,16 +85,20 @@ export const Card = ({
       weight,
     },
   ];
+  const [set, setSet] = useState(setsArr);
+  console.log(set);
   return (
     <BlurView intensity={70} tint="dark" style={styles.card}>
       <View style={styles.topFlex}>
         <Text style={styles.exercise}>{exerciseName}</Text>
-        <FontAwesome style={styles.exercise} name="trash-o"></FontAwesome>
+        <FontAwesome style={styles.exercise} name="trash-o" />
       </View>
-
-      {setsArr.map((e) => {
-        return <IncreaseDecreaseButtons setsArr={setsArr} />;
+      {set.map((e) => {
+        return (
+          <IncreaseDecreaseButtons set={set} setSet={setSet} setsArr={set} />
+        );
       })}
+      <AddNewSet onTouch={() => setSet((prev) => [...prev, setsArr[0]])} />
     </BlurView>
   );
 };
@@ -100,7 +120,6 @@ const styles = StyleSheet.create({
     color: "white",
   },
   topFlex: {
-    display: "flex",
     justifyContent: "space-between",
     flexDirection: "row",
   },
@@ -108,31 +127,76 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.ACCENT,
     borderRadius: 7,
     width: "100%",
-    minHeight: 75,
-    display: "flex",
+    minHeight: 50,
     flexDirection: "row",
     alignItems: "center",
-    gap: 15,
-    padding: 10,
-    fontFamily: "Klara-Bold",
+    gap: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
   },
-  repsSetsText: {},
   plusMinusButton: {
-    width: 50,
-    height: "80%",
+    width: 40,
+    height: 40,
     backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  kgInput: {
+    width: 60,
+    height: 40,
+    backgroundColor: "white",
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    textAlign: "center",
+  },
+  weightContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  weightText: {
+    fontFamily: "Karla-Bold",
+    fontSize: 12,
+    color: "white",
+  },
+  setNumberText: {
+    fontFamily: "Karla-Bold",
+    fontSize: 14,
+    color: "white",
+  },
+  repsNumberText: {
+    fontFamily: "Karla-Bold",
+    fontSize: 16,
+    color: "white",
+  },
+  repsLabelText: {
+    fontFamily: "Karla-Bold",
+    fontSize: 12,
+    color: "white",
+  },
+  buttonText: {
+    fontFamily: "Karla-Bold",
+    fontSize: 18,
+    color: "black",
+  },
+  spacer: {
+    flex: 1,
+  },
+  closeIcon: {
+    fontSize: 18,
+    color: "white",
+  },
+  addNewSet: {
+    width: "100%",
+    height: 50,
+    borderWidth: 2,
+    borderStyle: "dotted",
+    borderColor: COLORS.ACCENT,
+    borderRadius: 7,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 15,
-    fontFamily: "Klara-Bold",
     fontSize: 20,
-  },
-  kgInput: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "white",
-    borderRadius: 15,
-    padding: 10,
   },
 });
