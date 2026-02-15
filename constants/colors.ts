@@ -1,5 +1,5 @@
 export enum COLORS {
-  BACKGROUND = "#292524", // stone-900
-  BORDER = "#78716c", // stone-500
-  TEXT_MUTED = "#78716c", // stone-500
+  BACKGROUND = "#151519", // stone-900
+  ACCENT = "#6B7280",
+  LIGHTER_BG = "#292524",
 }

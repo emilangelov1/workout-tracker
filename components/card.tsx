@@ -1,0 +1,122 @@
+import { BlurView } from "expo-blur";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { COLORS } from "../constants/colors";
+import { FontAwesome } from "@expo/vector-icons";
+
+const IncreaseDecreaseButtons = ({ setsArr }) => {
+  return (
+    <View style={styles.repSetsContainer}>
+      <Text>#{setsArr.length}</Text>
+      <TouchableOpacity
+        style={styles.plusMinusButton}
+        onPress={() => console.log("test")}
+      >
+        -
+      </TouchableOpacity>
+      <Text>{setsArr.length}</Text>
+      <TouchableOpacity
+        style={styles.plusMinusButton}
+        onPress={() => console.log("test")}
+      >
+        +
+      </TouchableOpacity>
+      <Text>Reps</Text>
+    </View>
+  );
+};
+
+export const Card = ({
+  exerciseName,
+  sets,
+  reps,
+  weight,
+}: {
+  exerciseName: string;
+  sets: number;
+  reps: number;
+  weight: string;
+}) => {
+  const setsArr = [
+    {
+      id: 0,
+      sets,
+      reps,
+      weight,
+    },
+  ];
+  return (
+    <BlurView intensity={70} tint="dark" style={styles.card}>
+      <View style={styles.topFlex}>
+        <Text style={styles.exercise}>{exerciseName}</Text>
+        <FontAwesome style={styles.exercise} name="trash-o"></FontAwesome>
+      </View>
+      {setsArr.map((e) => {
+        return (
+          <View style={styles.repSetsContainer}>
+            <Text>#{setsArr.length}</Text>
+            <TouchableOpacity
+              style={styles.plusMinusButton}
+              onPress={() => console.log("test")}
+            >
+              -
+            </TouchableOpacity>
+            <Text>{setsArr.length}</Text>
+            <TouchableOpacity
+              style={styles.plusMinusButton}
+              onPress={() => console.log("test")}
+            >
+              +
+            </TouchableOpacity>
+            <Text>Reps</Text>
+          </View>
+        );
+      })}
+    </BlurView>
+  );
+};
+
+const styles = StyleSheet.create({
+  card: {
+    width: "90%",
+    minHeight: 150,
+    borderRadius: 10,
+    borderColor: COLORS.ACCENT,
+    backgroundColor: COLORS.LIGHTER_BG,
+    borderWidth: 2,
+    padding: 20,
+    gap: 15,
+  },
+  exercise: {
+    fontFamily: "Karla-Bold",
+    fontSize: 20,
+    color: "white",
+  },
+  topFlex: {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  repSetsContainer: {
+    backgroundColor: COLORS.ACCENT,
+    borderRadius: 7,
+    width: "100%",
+    minHeight: 50,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 15,
+    fontFamily: "Klara-Bold",
+  },
+  repsSetsText: {},
+  plusMinusButton: {
+    width: 50,
+    height: "80%",
+    backgroundColor: "white",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 15,
+    fontFamily: "Klara-Bold",
+    fontSize: 20,
+  },
+});

@@ -2,8 +2,10 @@ import { StyleSheet, View } from "react-native";
 import { Footer } from "./components/footer";
 import { COLORS } from "./constants/colors";
 import * as Font from "expo-font";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import "./global.css";
+import { Card } from "./components/card";
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
@@ -21,17 +23,25 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Footer />
-    </View>
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.content} />
+        <Card exerciseName="BENCH" reps={5} sets={5} weight="170kg" />
+        <Footer />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: "center",
+    flexDirection: "column",
     fontFamily: "Karla-Regular",
-    width: "100%",
-    height: "100%",
     backgroundColor: COLORS.BACKGROUND,
+  },
+  content: {
+    flex: 1,
   },
 });
