@@ -2,37 +2,49 @@ import { Text, TouchableOpacity, StyleSheet, View } from "react-native";
 import { COLORS } from "../constants/colors";
 import { BlurView } from "expo-blur";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useState } from "react";
-export const Footer = () => {
-  const [activeTab, setActiveTab] = useState(0);
+import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+
+export const Footer = ({ state, navigation }: BottomTabBarProps) => {
   const tabs = [
-    { id: 0, name: "Log", icon: "dumbbell" },
-    { id: 1, name: "History", icon: "chart-line" },
+    { id: 0, name: "Log", icon: "dumbbell", route: "index" },
+    { id: 1, name: "History", icon: "chart-line", route: "history" },
   ];
+
   return (
     <View style={styles.container}>
-      {tabs.map((e) => {
+      {tabs.map((tab, index) => {
+        const isActive = state.index === index;
         return (
           <BlurView
             style={styles.button}
             // intensity={90}
             tint="dark"
             // experimentalBlurMethod="dimezisBlurView"
-            key={e.id}
+            key={tab.id}
           >
             <TouchableOpacity
-              // style={styles.opacityWrapper}
               style={{
-                borderTopColor: `${activeTab === e.id ? COLORS.ACCENT : COLORS.BACKGROUND}`,
-                borderTopWidth: 2,
+                borderTopColor: `${isActive ? COLORS.PRIMARY : "transparent"}`,
+                borderTopWidth: 3,
                 ...styles.opacityWrapper,
               }}
               onPress={() => {
-                setActiveTab(e.id);
+                navigation.navigate(tab.route);
               }}
             >
-              <FontAwesome6 name={e.icon} color="white" size={24} />
-              <Text style={styles.text}>{e.name}</Text>
+              <FontAwesome6
+                name={tab.icon}
+                color={isActive ? COLORS.PRIMARY : COLORS.TEXT_MUTED}
+                size={24}
+              />
+              <Text
+                style={{
+                  ...styles.text,
+                  color: isActive ? COLORS.TEXT_PRIMARY : COLORS.TEXT_MUTED,
+                }}
+              >
+                {tab.name}
+              </Text>
             </TouchableOpacity>
           </BlurView>
         );
@@ -43,12 +55,16 @@ export const Footer = () => {
 
 const styles = StyleSheet.create({
   container: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
     display: "flex",
     flexDirection: "row",
     width: "100%",
-    height: "10%",
-    borderTopWidth: 2,
-    borderTopColor: COLORS.BACKGROUND,
+    height: 80,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.BORDER,
     boxShadow: `0 -20px 40px -0px ${COLORS.BACKGROUND}`,
   },
   opacityWrapper: {
@@ -62,11 +78,11 @@ const styles = StyleSheet.create({
   button: {
     height: "100%",
     width: "50%",
-    backgroundColor: COLORS.BACKGROUND,
+    backgroundColor: COLORS.SURFACE,
   },
   text: {
-    color: "#fefefe",
+    color: COLORS.TEXT_PRIMARY,
     fontFamily: "Karla-Bold",
-    fontSize: 16,
+    fontSize: 14,
   },
 });
