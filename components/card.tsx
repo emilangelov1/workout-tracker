@@ -28,18 +28,15 @@ interface SetItem {
 
 const IncreaseDecreaseButtons = ({
   id,
-  setsArr,
-  set,
   setSet,
+  reps,
   setNumber,
 }: {
   id: number;
-  setsArr: SetItem[];
-  set: SetItem[];
+  reps: number;
   setSet: (value: SetItem[] | ((prev: SetItem[]) => SetItem[])) => void;
   setNumber: number;
 }) => {
-  const [reps, setReps] = useState(1);
   return (
     <View style={styles.repSetsContainer}>
       <Text style={styles.setNumberText}>#{setNumber}</Text>
@@ -47,10 +44,11 @@ const IncreaseDecreaseButtons = ({
         style={styles.plusMinusButton}
         onPress={() =>
           setReps((prev) => {
-            if (prev === 1) {
-              return prev;
+            const foundReps = prev.find((e) => e.id === id).reps;
+            if (foundReps === 1) {
+              return foundReps;
             }
-            return prev - 1;
+            return foundReps - 1;
           })
         }
       >
@@ -59,12 +57,14 @@ const IncreaseDecreaseButtons = ({
       <Text style={styles.repsNumberText}>{reps}</Text>
       <TouchableOpacity
         style={styles.plusMinusButton}
-        onPress={() => setReps((prev) => prev + 1)}
+        onPress={() =>
+          setSet((prev) => prev.find((e) => e.id === id)?.reps + 1)
+        }
       >
         <Text style={styles.buttonText}>+</Text>
       </TouchableOpacity>
       <Text style={styles.repsLabelText}>REPS</Text>
-      <WeightInput />
+      <WeightInput setSet={setSet} />
       <View style={styles.spacer} />
       <FontAwesome
         style={styles.closeIcon}
@@ -75,10 +75,18 @@ const IncreaseDecreaseButtons = ({
   );
 };
 
-const WeightInput = (): React.ReactElement => {
+const WeightInput = ({
+  setSet,
+}: {
+  setSet: (value: SetItem[] | ((prev: SetItem[]) => SetItem[])) => void;
+}): React.ReactElement => {
   return (
     <View style={styles.weightContainer}>
-      <TextInput style={styles.kgInput} placeholder="20" />
+      <TextInput
+        style={styles.kgInput}
+        placeholder="20"
+        onChangeText={(text) => setSet()}
+      />
       <Text style={styles.weightText}>KG</Text>
     </View>
   );
@@ -101,8 +109,8 @@ export const Card = ({
     reps,
     weight,
   };
-  const [set, setSet] = useState();
-  console.log(set);
+  const [set, setSet] = useState([defaultSet]);
+  console.log(set?.[0] ?? "");
   return (
     <BlurView intensity={70} tint="dark" style={styles.card}>
       <View style={styles.topFlex}>
@@ -125,7 +133,7 @@ export const Card = ({
         onTouch={() =>
           setSet((prev) => [
             ...(prev ?? []),
-            { ...(set?.[0] ?? defaultSet), id: Math.random() },
+            { ...set?.[0], id: Math.random() },
           ])
         }
       />
